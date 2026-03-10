@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Game Teka Teki Pintar</title>
+
+<style>
+body{
+font-family: Arial;
+text-align:center;
+background:#4CAF50;
+color:white;
+}
+
+#game{
+background:white;
+color:black;
+padding:20px;
+margin:20px;
+border-radius:10px;
+}
+
+button{
+padding:10px;
+margin:5px;
+width:120px;
+font-size:16px;
+}
+
+#score{
+font-size:20px;
+margin:10px;
+}
+</style>
+
+</head>
+
+<body>
+
+<h1>Game Anak Pintar</h1>
+
+<select id="language">
+<option value="id">Indonesia</option>
+<option value="en">English</option>
+</select>
+
+<div id="score">Score : 0</div>
+
+<div id="game">
+<h2 id="question">Pertanyaan muncul di sini</h2>
+
+<div id="answers"></div>
+
+</div>
+
+<button onclick="mathQuestion()">Soal Matematika</button>
+<button onclick="languageQuestion()">Soal Bahasa</button>
+
+<script>
+
+let score = 0
+
+function updateScore(){
+document.getElementById("score").innerText="Score : "+score
+}
+
+function random(min,max){
+return Math.floor(Math.random()*(max-min+1))+min
+}
+
+function mathQuestion(){
+
+let a=random(1,10)
+let b=random(1,10)
+
+let types=["+","-","x","/"]
+let type=types[random(0,3)]
+
+let question
+let correct
+
+if(type=="+"){
+question=a+" + "+b
+correct=a+b
+}
+
+if(type=="-"){
+question=a+" - "+b
+correct=a-b
+}
+
+if(type=="x"){
+question=a+" × "+b
+correct=a*b
+}
+
+if(type=="/"){
+question=(a*b)+" ÷ "+a
+correct=b
+}
+
+showQuestion(question,correct)
+
+}
+
+function languageQuestion(){
+
+let words=[
+{q:"Apa arti 'Apple' ?",a:"Apel"},
+{q:"Apa arti 'Cat' ?",a:"Kucing"},
+{q:"Apa arti 'Book' ?",a:"Buku"},
+{q:"Apa arti 'Water' ?",a:"Air"}
+]
+
+let w=words[random(0,words.length-1)]
+
+showQuestion(w.q,w.a)
+
+}
+
+function showQuestion(q,correct){
+
+document.getElementById("question").innerText=q
+
+let answers=[correct]
+
+while(answers.length<4){
+
+let wrong=correct+random(-10,10)
+
+if(!answers.includes(wrong)){
+answers.push(wrong)
+}
+
+}
+
+answers.sort(()=>Math.random()-0.5)
+
+let html=""
+
+answers.forEach(ans=>{
+
+html+=`<button onclick="checkAnswer('${ans}','${correct}')">${ans}</button><br>`
+
+})
+
+document.getElementById("answers").innerHTML=html
+
+}
+
+function checkAnswer(ans,correct){
+
+if(ans==correct){
+alert("Benar!")
+score++
+}else{
+alert("Salah!")
+}
+
+updateScore()
+
+}
+
+mathQuestion()
+
+</script>
+
+</body>
+</html>
